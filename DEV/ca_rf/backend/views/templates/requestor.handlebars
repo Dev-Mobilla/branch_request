@@ -1,0 +1,43 @@
+<div style="margin: auto;width:95%">
+    <br>
+    <div
+        style="border: 1px solid rgba(0, 0, 0, 0.192);border-left: 13px solid red;border-radius:3px 3px 0px 0px;box-shadow: 0px 1px 4px 0px #d1d1d1;">
+        <br>
+        <div style="margin: auto;width:90%">
+            <p style="font-size: 15px;font-weight: 400;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                Hi! {{requestor}}
+            </p>
+            <p style="font-size: 15px;color: #353434;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                {{message}}
+                <span style="font-weight:500 ;text-transform:uppercase">
+                    {{approver}}
+                </span>
+                {{#if time}}
+                <span style="font-weight:500 ;">{{time}}</span>
+                {{/if}}
+            </p>
+            {{#if next_approver}}
+            <p style="font-size: 15px;color: #353434;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                Waiting for approval of {{next_approver}}
+            </p>
+            {{/if}}
+            {{#if comment}}
+            <p style="font-size: 15px;color: #353434;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                {{approver}}'s Comment: <span style="font-weight: 500;">{{comment}}</span>
+            </p>
+            {{/if}}
+            <p style="font-size: 15px;color: #353434;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                Request Status:
+                {{!-- <span
+                    style="text-transform: capitalize;border-radius: 3px;padding: 4px 9px;background-color:rgb(248, 191, 125) ;color: rgb(184, 52, 4);">
+                    {{status}}
+                </span> --}}
+                <span
+                    style="text-transform: capitalize;border-radius: 3px;padding: 4px 9px;background-color:{{bgColor}} ;color: {{color}};">
+                    {{status}}
+                </span>
+            </p>
+        </div>
+        <br>
+    </div>
+</div>
