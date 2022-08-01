@@ -2,7 +2,7 @@ const branchdbConnection = require('../config/branchDBConnection');
 const dbConnection = require('../config/dbConnection');
 const kpdbConnection = require('../config/dbConnection');
 const query = require('../config/queries');
-const logger = require('../logs/logger');
+const Logger = require('../logs/logger');
 const { sendEmailRf, sendRfRequestor } = require('./mailController');
 const mailController = require('./mailController');
 
@@ -13,18 +13,24 @@ module.exports = {
                 if (!err) {
                     if (!row.length == 0) {
                         console.log('ID', row);
+                        Logger.loggerInfo.addContext('context', `requestController - getMaxId - `);
+                        Logger.loggerInfo.info(`row: ${row.length}`)
                         res.send(row[0])
                     } else {
-                        console.log("No id found");
+                        Logger.loggerError.addContext('context', 'requestController - getMaxId - ');
+                        Logger.loggerError.error(`No ID found row: ${row.length}`);
                         res.send({ id: 0 })
                     }
                 } else {
-                    console.log("ERR", err);
+                    Logger.loggerError.addContext('context', 'requestController - getMaxId - ');
+                    Logger.loggerError.error(`Error retrieving ID ${err}`);
                     res.send({ message: "Error ID retrieval." })
                 }
             })
         } catch (error) {
             console.log("ERROR", error);
+            Logger.loggerFatal.addContext('context', 'requestController - getMaxId - ');
+            Logger.loggerFatal.fatal(`Method Error - ${error}`);
             res.send({ message: "Error ID retrieval." })
         }
     },
@@ -33,25 +39,29 @@ module.exports = {
             branchdbConnection.query(query.getRfMaxId, (err, row, fields) => {
                 if (!err) {
                     if (!row.length == 0) {
-                        console.log('ID', row);
+                        Logger.loggerInfo.addContext('context', `requestController - getRfMaxId - `);
+                        Logger.loggerInfo.info(`row: ${row.length}`)
                         res.send(row[0])
                     } else {
-                        console.log("No id found");
+                        Logger.loggerError.addContext('context', 'requestController - getRfMaxId - ');
+                        Logger.loggerError.error(`No ID found row: ${row.length}`);
                         res.send({ id: 0 })
                     }
                 } else {
-                    console.log("ERR", err);
+                    Logger.loggerError.addContext('context', 'requestController - getRfMaxId - ');
+                    Logger.loggerError.error(`Error retrieving ID ${err}`);
                     res.send({ message: "Error ID retrieval." })
                 }
             })
         } catch (error) {
-            console.log("ERROR", error);
+            Logger.loggerFatal.addContext('context', 'requestController - getRfMaxId - ');
+            Logger.loggerFatal.fatal(`Method Error - ${error}`);
             res.send({ message: "Error ID retrieval." })
         }
     },
     postRequest(req, res) {
-        console.log('DATA', req.body);
-
+        Logger.loggerInfo.addContext('context', 'requestController - postRequest - ');
+        Logger.loggerInfo.info(`DATA: ${req.body}`);
         try {
             let area = (req.body.data.area).substr(15);
             let region = (req.body.data.region).substr(4);
@@ -72,7 +82,6 @@ module.exports = {
                 WHERE am.regionname LIKE '%TEST%' AND am.areaname LIKE '%TEST%'`,
                 (err, approverRows, fields) => {
                     if (!err) {
-                        console.log(approverRows);
                         if (!approverRows.length == 0) {
                             try {
                                 branchdbConnection.query(query.postRequest,
@@ -94,57 +103,76 @@ module.exports = {
                                                                 if (response.accepted) {
                                                                     mailController.sendEmailNotificationRequestor(request_rows).then(resp => {
                                                                         if (resp.accepted) {
+                                                                            Logger.loggerInfo.addContext('context', 'requestController - postRequest - Request Submitted Successfully');
+                                                                            Logger.loggerInfo.info(`sendEmailNotificationRequestor - ${resp.messageId} - ${resp.accepted}`);
                                                                             res.send({ message: 'Request submitted successfully' })
                                                                         } else if (resp.rejected) {
-                                                                            console.log(err);
+                                                                            Logger.loggerError.addContext('context', 'requestController - postRequest - Network error');
+                                                                            Logger.loggerInfo.error(`sendEmailNotificationRequestor - ${resp.messageId} - ${resp.rejected}`);
                                                                             res.send({ message: 'Network error' })
                                                                         }
                                                                     }).catch(err => {
-                                                                        console.log(err);
+                                                                        Logger.loggerError.addContext('context', 'requestController - postRequest - Network Error -');
+                                                                        Logger.loggerError.error(`sendEmailNotificationRequestor ${err}`)
                                                                         res.send({ message: 'Network error' })
                                                                     })
                                                                 }
                                                                 else if (response.rejected) {
+                                                                    Logger.loggerError.addContext('context', 'requestController - postRequest - Failed to submit request');
+                                                                    Logger.loggerInfo.error(`sendMail - ${response.messageId} - ${response.rejected}`);
                                                                     res.status(400).send({ message: 'Failed to submit request' })
                                                                 }
                                                             }).catch(err => {
-                                                                console.log(err);
+                                                                Logger.loggerError.addContext('context', 'requestController - postRequest - Network Error -');
+                                                                Logger.loggerError.error(`sendMail ${err}`)
                                                                 res.send({ message: 'Network error' })
                                                             })
                                                         } else {
+                                                            Logger.loggerError.addContext('context', 'requestController - postRequest - ');
+                                                            Logger.loggerError.error(`No data found request_rows: ${request_rows.length}`)
                                                             res.status(400).send({ message: 'Failed to submit request' })
                                                         }
                                                     } else {
+                                                        Logger.loggerError.addContext('context', 'requestController - postRequest - ');
+                                                        Logger.loggerError.error(`ERR REQUEST_BY_CONTROLID ${err}`);
                                                         res.status(404).send({ message: 'Failed to submit request' })
-                                                        console.log('ERR REQUEST_BY_CONTROLID', err);
                                                     }
                                                 })
                                             } catch (error) {
-                                                console.log(error);
+                                                Logger.loggerError.addContext('context', 'requestController - postRequest - ');
+                                                Logger.loggerError.error(`ERR REQUEST_BY_CONTROLID ${error}`);
+                                                res.status(404).send({ message: 'Failed to submit request' });
                                             }
                                         }
                                         else {
+                                            Logger.loggerError.addContext('context', 'requestController - postRequest - ');
+                                            Logger.loggerError.error(`Failed to submit request ${err}`);
                                             console.log('Failed to submit request', err);
                                             res.status(400).send({ message: 'Failed to submit request' })
                                         }
                                     })
                             } catch (error) {
-                                console.log(error);
+                                Logger.loggerError.addContext('context', 'requestController - postRequest -');
+                                Logger.loggerError.error(`Insertion Failed ${error}`);
+                                res.status(400).send({ message: 'Failed to submit request' });
                             }
 
                         } else {
+                            Logger.loggerError.addContext('context', 'requestController - postRequest -');
+                            Logger.loggerError.error(`No Approvers found approversRows: ${approverRows.length}`);
                             res.status(404).send({ message: 'Failed to submit request' })
                         }
 
                     } else {
-                        console.log(err);
+                        Logger.loggerError.addContext('context', 'requestController - postRequest');
+                        Logger.loggerError.error(`Error retrieving approvers ${err}`)
                     }
                 })
 
         } catch (error) {
-            console.log('ERROR', error);
+            Logger.loggerFatal.addContext('context', 'requestController - postRequest');
+            Logger.loggerFatal.fatal(`Method Error ${error}`);
             res.status(500).send({ message: "Something's wrong in the server. Please refresh the page and try again." });
-
         }
 
     },
@@ -156,10 +184,12 @@ module.exports = {
             switch (req.body.data.type) {
                 case "Branch Manager":
                     try {
+                        Logger.loggerInfo.addContext('context', 'requestController - post_RfRequest -');
+                        Logger.loggerInfo.info(`Requestor Type: Branch Manager`);
                         dbConnection.query(`SELECT areacode AS areaname FROM branches WHERE branchname LIKE '%${req.body.data.baseBranch}%'`, (err, areacode, fields) => {
                             if (!err) {
                                 if (!areacode.length == 0) {
-                                    console.log('areacode',areacode);
+                                    
                                     // console.log(areacode[0].areaname);
                                     branchdbConnection.query(
                                         // `SELECT rm.fullname AS rm_fullname,rm.regionname AS rm_region, rm.email AS rm_email, am.fullname AS am_fullname,am.regionname AS am_region, am.email AS am_email 
@@ -189,7 +219,6 @@ module.exports = {
                                         (err, approvers, fields) => {
                                             if (!err) {
                                                 if (!approvers.length == 0) {
-                                                    console.log(approvers[0]);
                                                     branchdbConnection.query(query.postRfRequest,
                                                         [
                                                             req.body.data.type, req.body.data.rfDate, req.body.data.requestor, req.body.data.baseBranch, req.body.data.region,
@@ -201,72 +230,89 @@ module.exports = {
                                                         ],
                                                         (err, results, fields) => {
                                                             if (!err) {
-                                                                branchdbConnection.query(query.getRfRequestByControlNo, (req.body.data.controlNo), (err, request, fields) =>{
+                                                                branchdbConnection.query(query.getRfRequestByControlNo, (req.body.data.controlNo), (err, request, fields) => {
                                                                     if (!err) {
                                                                         if (!request.length == 0) {
-                                                                            console.log(request[0]);
                                                                             sendEmailRf(request[0]).then(response => {
                                                                                 if (response.accepted) {
-                                                                                    sendRfRequestor(request[0], request[0].am_fullname, request[0].rm_fullname).then(resp =>{
+                                                                                    sendRfRequestor(request[0], request[0].am_fullname, request[0].rm_fullname).then(resp => {
                                                                                         if (resp.accepted) {
-                                                                                            res.send({message:'Request submitted successfully'});
+                                                                                            Logger.loggerInfo.addContext('context', 'requestController - post_RfRequest - Request Submitted Successfully');
+                                                                                            Logger.loggerInfo.info(`sendRfRequestor - ${resp.messageId} - ${resp.accepted}`);
+                                                                                            res.send({ message: 'Request submitted successfully' });
                                                                                         } else if (resp.rejected) {
-                                                                                            res.send({message:'Network Error'});
+                                                                                            Logger.loggerError.addContext('context', 'requestController - post_RfRequest - Network error');
+                                                                                            Logger.loggerInfo.error(`sendRfRequestor - ${resp.messageId} - ${resp.rejected}`);
+                                                                                            res.send({ message: 'Network Error' });
                                                                                         }
-                                                                                        
                                                                                     }).catch(err => {
-                                                                                        console.log(err);
-                                                                                        res.send({message:"Network Error"});
+                                                                                        Logger.loggerError.addContext('context', 'requestController - post_RfRequest - Network Error -');
+                                                                                        Logger.loggerError.error(`sendRfRequestor ${err}`)
+                                                                                        res.send({ message: "Network Error" });
                                                                                     })
                                                                                 } else if (response.rejected) {
-                                                                                    res.send({message: 'Network Error'});
+                                                                                    Logger.loggerError.addContext('context', 'requestController - post_RfRequest - Network Error -');
+                                                                                    Logger.loggerError.error(`sendEmailRf - ${response.messageId} - ${response.rejected}`)
+                                                                                    res.send({ message: 'Network Error' });
                                                                                 }
                                                                             }).catch(err => {
-                                                                                console.log(err);
-                                                                                res.send({message:"Network Error"});
+                                                                                Logger.loggerError.addContext('context', 'requestController - post_RfRequest - Network Error -');
+                                                                                Logger.loggerError.error(`sendEmailRf ${err}`)
+                                                                                res.send({ message: "Network Error" });
                                                                             })
-                                                                            
+
                                                                         } else {
-                                                                            console.log(request.length);
-                                                                            res.status(404).send({message:'Failed to submit request'});
+                                                                            Logger.loggerError.addContext('context', 'requestController - post_RfRequest - getRfRequestByControlNo');
+                                                                            Logger.loggerError.error(`No data found - ${request.length}`);
+                                                                            res.status(404).send({ message: 'Failed to submit request' });
                                                                         }
                                                                     } else {
-                                                                        console.log(err);
-                                                                        res.status(500).send({message:"Something's wrong in the server"});
+                                                                        Logger.loggerError.addContext('context', 'requestController - post_RfRequest - getRfRequestByControlNo');
+                                                                        Logger.loggerError.error(`Something's wrong in the server - ${err}`);
+                                                                        res.status(500).send({ message: "Something's wrong in the server" });
                                                                     }
                                                                 })
                                                                 // res.send(results);
                                                             } else {
-                                                                console.log(err);
-                                                                res.status(500).send({message:"Something's wrong in the server"});
+                                                                Logger.loggerError.addContext('context', 'requestController - post_RfRequest - postRfRequest');
+                                                                Logger.loggerError.error(`Something's wrong in the server - ${err}`);
+                                                                res.status(500).send({ message: "Something's wrong in the server" });
                                                             }
                                                         })
                                                 } else {
-                                                    console.log(approvers.length);
-                                                    res.status(404).send({message:'No data found for approvers'})
+                                                    Logger.loggerError.addContext('context', 'requestController - post_RfRequest -');
+                                                    Logger.loggerError.error(`No data found for approvers - approvers length: ${approvers.length}`);
+                                                    res.status(404).send({ message: 'No data found for approvers' })
                                                 }
                                             } else {
-                                                console.log(err);
-                                                res.status(500).send({message:"Something's wrong in the server"})
+                                                Logger.loggerError.addContext('context', 'requestController - post_RfRequest -');
+                                                Logger.loggerError.error(`Error retrieving approvers - ${err}`);
+                                                res.status(500).send({ message: "Something's wrong in the server" })
                                             }
                                         })
                                 } else {
-                                    console.log(areacode[0]);
-                                    res.status(404).send({message:"No data found. Make sure that Base Branch and Region is correct."});
+                                    Logger.loggerError.addContext('context', 'requestController - post_RfRequest -');
+                                    Logger.loggerError.error(`No areacode found  - areacode length: ${areacode.length}`);
+                                    res.status(404).send({ message: "No data found. Make sure that Base Branch and Region is correct." });
                                 }
 
                             } else {
-                                console.log(err);
-                                res.status(500).send({message:"Something's wrong in the server"})
+                                Logger.loggerError.addContext('context', 'requestController - post_RfRequest -');
+                                Logger.loggerError.error(`Error retrieving areacode - ${err}`);
+                                res.status(500).send({ message: "Something's wrong in the server" })
                             }
 
                         })
                     } catch (error) {
                         console.log(error);
-                        res.status(500).send({message:"Something's wrong in the server"})
+                        Logger.loggerFatal.addContext('context', 'requestContoller - post_RfRequest - ');
+                        Logger.loggerFatal.fatal(`Something's wrong in the server - ${error}`);
+                        res.status(500).send({ message: "Something's wrong in the server" })
                     }
                     break;
                 case "Area Manager":
+                    Logger.loggerInfo.addContext('context', 'requestController - post_RfRequest -');
+                    Logger.loggerInfo.info(`Requestor Type: Area Manager`);
                     dbConnection.query(`SELECT areacode AS areaname FROM branches WHERE branchname LIKE '%${req.body.data.baseBranch}%'`, (err, areacode, fields) => {
                         if (!err) {
                             if (!areacode.length == 0) {
@@ -307,60 +353,81 @@ module.exports = {
                                                     ],
                                                     (err, results, fields) => {
                                                         if (!err) {
-                                                            branchdbConnection.query(query.getRfRequestByControlNo, (req.body.data.controlNo), (err, request, fields) =>{
+                                                            branchdbConnection.query(query.getRfRequestByControlNo, (req.body.data.controlNo), (err, request, fields) => {
                                                                 if (!err) {
                                                                     if (!request.length == 0) {
                                                                         sendEmailRf(request[0]).then(response => {
                                                                             if (response.accepted) {
-                                                                                sendRfRequestor(request[0], request[0].rm_fullname, request[0].ram_fullname).then(resp =>{
+                                                                                sendRfRequestor(request[0], request[0].rm_fullname, request[0].ram_fullname).then(resp => {
                                                                                     if (resp.accepted) {
-                                                                                        res.send({message:'Request submitted successfully'});
+                                                                                        Logger.loggerInfo.addContext('context', 'requestController - post_RfRequest - Request Submitted Successfully');
+                                                                                        Logger.loggerInfo.info(`sendRfRequestor - ${resp.messageId} - ${resp.accepted}`);
+                                                                                        res.send({ message: 'Request submitted successfully' });
                                                                                     } else if (resp.rejected) {
-                                                                                        res.status(500).send({message:'Network Error'});
+                                                                                        Logger.loggerError.addContext('context', 'requestController - post_RfRequest - Network error');
+                                                                                        Logger.loggerInfo.error(`sendRfRequestor - ${resp.messageId} - ${resp.rejected}`);
+                                                                                        res.status(500).send({ message: 'Network Error' });
                                                                                     }
                                                                                 }).catch(err => {
-                                                                                    console.log(err);
-                                                                                    res.status(500).send({message:"Network Error"});
+                                                                                    Logger.loggerError.addContext('context', 'requestController - post_RfRequest - Network Error -');
+                                                                                    Logger.loggerError.error(`sendRfRequestor ${err}`)
+                                                                                    res.status(500).send({ message: "Network Error" });
                                                                                 })
                                                                             } else if (response.rejected) {
-                                                                                res.status(500).send({message: 'Network Error'});
+                                                                                Logger.loggerError.addContext('context', 'requestController - post_RfRequest - Network Error -');
+                                                                                Logger.loggerError.error(`sendEmailRf - ${response.messageId} - ${response.rejected}`)
+                                                                                res.status(500).send({ message: 'Network Error' });
                                                                             }
                                                                         }).catch(err => {
-                                                                            console.log(err);
-                                                                            res.status(500).send({message:"Network Error"});
+                                                                            Logger.loggerError.addContext('context', 'requestController - post_RfRequest - Network Error -');
+                                                                            Logger.loggerError.error(`sendEmailRf ${err}`)
+                                                                            res.status(500).send({ message: "Network Error" });
                                                                         })
-                                                                        
+
                                                                     } else {
-                                                                        console.log(request.length);
-                                                                        res.status(404).send({message:'Failed to submit request'});
+                                                                        Logger.loggerError.addContext('context', 'requestController - post_RfRequest - getRfRequestByControlNo');
+                                                                        Logger.loggerError.error(`No data found - ${request.length}`);
+                                                                        res.status(404).send({ message: 'Failed to submit request' });
                                                                     }
                                                                 } else {
-                                                                    console.log(err);
-                                                                    res.status(500).send({message:"Something's wrong in the server"});
+                                                                    Logger.loggerError.addContext('context', 'requestController - post_RfRequest - getRfRequestByControlNo');
+                                                                    Logger.loggerError.error(`No data found - ${request.length}`);
+                                                                    res.status(500).send({ message: "Something's wrong in the server" });
                                                                 }
                                                             })
                                                         } else {
-                                                            console.log(err);
-                                                            res.status(500).send({message:"Something's wrong in the server"});
+                                                            Logger.loggerError.addContext('context', 'requestController - post_RfRequest - getRfRequestByControlNo');
+                                                            Logger.loggerError.error(`Something's wrong in the server - ${err}`);
+                                                            res.status(500).send({ message: "Something's wrong in the server" });
                                                         }
                                                     })
                                             } else {
+                                                Logger.loggerError.addContext('context', 'requestController - post_RfRequest -');
+                                                Logger.loggerError.error(`No data found for approvers - approvers length: ${approvers.length}`);
                                                 res.status(404).send({ message: 'No approvers found' })
                                             }
                                         } else {
-                                            res.status(500).send({message:"Something's wrong in the server"})
+                                            Logger.loggerError.addContext('context', 'requestController - post_RfRequest -');
+                                            Logger.loggerError.error(`Error retrieving approvers - ${err}`);
+                                            res.status(500).send({ message: "Something's wrong in the server" })
                                         }
                                     })
                             } else {
+                                Logger.loggerError.addContext('context', 'requestController - post_RfRequest -');
+                                Logger.loggerError.error(`No areacode found  - areacode length: ${areacode.length}`);
                                 res.status(404).send({ message: 'No data found. Make sure that Base Branch and Region is correct.' })
                             }
                         } else {
-                            res.status(500).send({message:"Something's wrong in the server"})
+                            Logger.loggerError.addContext('context', 'requestController - post_RfRequest -');
+                            Logger.loggerError.error(`Error retrieving areacode - ${err}`);
+                            res.status(500).send({ message: "Something's wrong in the server" })
                         }
                     })
 
                     break;
                 case "Regional Manager":
+                    Logger.loggerInfo.addContext('context', 'requestController - post_RfRequest -');
+                    Logger.loggerInfo.info(`Requestor Type: Regional Manager`);
                     branchdbConnection.query(
                         // `SELECT rm.fullname AS rm_fullname,rm.regionname AS rm_region, rm.email AS rm_email, am.fullname AS am_fullname,am.regionname AS am_region, am.email AS am_email 
                         // FROM am_approvers am
@@ -397,51 +464,70 @@ module.exports = {
                                         ],
                                         (err, results, fields) => {
                                             if (!err) {
-                                                branchdbConnection.query(query.getRfRequestByControlNo, (req.body.data.controlNo), (err, request, fields) =>{
+                                                branchdbConnection.query(query.getRfRequestByControlNo, (req.body.data.controlNo), (err, request, fields) => {
                                                     if (!err) {
                                                         if (!request.length == 0) {
                                                             console.log(request[0]);
                                                             sendEmailRf(request[0]).then(response => {
                                                                 if (response.accepted) {
-                                                                    sendRfRequestor(request[0], request[0].ram_fullname, request[0].ass_fullname).then(resp =>{
+                                                                    sendRfRequestor(request[0], request[0].ram_fullname, request[0].ass_fullname).then(resp => {
                                                                         if (resp.accepted) {
-                                                                            res.send({message:"Request submitted successfully"});
+                                                                            Logger.loggerInfo.addContext('context', 'requestController - post_RfRequest - Request Submitted Successfully');
+                                                                            Logger.loggerInfo.info(`sendRfRequestor - ${resp.messageId} - ${resp.accepted}`);
+                                                                            res.send({ message: "Request submitted successfully" });
                                                                         } else if (resp.rejected) {
-                                                                            res.status(500).send({message:"Network Error"})
+                                                                            Logger.loggerError.addContext('context', 'requestController - post_RfRequest - Network error');
+                                                                            Logger.loggerInfo.error(`sendRfRequestor - ${resp.messageId} - ${resp.rejected}`);
+                                                                            res.status(500).send({ message: "Network Error" })
                                                                         }
                                                                     }).catch(err => {
-                                                                        console.log(err);
-                                                                        res.status(500).send({message:"Network Error"});
+                                                                        Logger.loggerError.addContext('context', 'requestController - post_RfRequest - Network Error -');
+                                                                        Logger.loggerError.error(`sendRfRequestor ${err}`)
+                                                                        res.status(500).send({ message: "Network Error" });
                                                                     })
                                                                 } else if (response.rejected) {
-                                                                    res.status(500).send({message: 'Network Error'});
+                                                                    Logger.loggerError.addContext('context', 'requestController - post_RfRequest - Network Error -');
+                                                                    Logger.loggerError.error(`sendEmailRf - ${response.messageId} - ${response.rejected}`)
+                                                                    res.status(500).send({ message: 'Network Error' });
                                                                 }
                                                             }).catch(err => {
-                                                                console.log(err);
-                                                                res.status(500).send({message: 'Network Error'});
+                                                                Logger.loggerError.addContext('context', 'requestController - post_RfRequest - Network Error -');
+                                                                Logger.loggerError.error(`sendEmailRf ${err}`)
+                                                                res.status(500).send({ message: 'Network Error' });
                                                             })
-                                                            
+
                                                         } else {
-                                                            res.status(404).send({message:'Failed to submit request'});
-                                                            console.log(request.length);
+                                                            Logger.loggerError.addContext('context', 'requestController - post_RfRequest - getRfRequestByControlNo');
+                                                            Logger.loggerError.error(`No data found - ${request.length}`);
+                                                            res.status(404).send({ message: 'Failed to submit request' });
                                                         }
                                                     } else {
-                                                        res.status(500).send({message:"Something's wrong in the server"});
+                                                        Logger.loggerError.addContext('context', 'requestController - post_RfRequest - getRfRequestByControlNo');
+                                                        Logger.loggerError.error(`Something's wrong in the server - ${err}`);
+                                                        res.status(500).send({ message: "Something's wrong in the server" });
                                                     }
                                                 })
                                             } else {
-                                                res.status(500).send({message:"Something's wrong in the server"});
+                                                Logger.loggerError.addContext('context', 'requestController - post_RfRequest - postRfRequest');
+                                                Logger.loggerError.error(`Something's wrong in the server - ${err}`);
+                                                res.status(500).send({ message: "Something's wrong in the server" });
                                             }
                                         })
                                 } else {
-                                    res.status(404).send({ message: 'No approvers found' })
+                                    Logger.loggerError.addContext('context', 'requestController - post_RfRequest -');
+                                    Logger.loggerError.error(`No data found for approvers - approvers length: ${approvers.length}`);
+                                    res.status(404).send({ message: 'No approvers found' });
                                 }
                             } else {
-                                res.status(500).send({message:"Something's wrong in the server"});
+                                Logger.loggerError.addContext('context', 'requestController - post_RfRequest -');
+                                Logger.loggerError.error(`Error retrieving approvers - ${err}`);
+                                res.status(500).send({ message: "Something's wrong in the server" });
                             }
                         })
                     break;
                 case "Regional Area Manager":
+                    Logger.loggerInfo.addContext('context', 'requestController - post_RfRequest -');
+                    Logger.loggerInfo.info(`Requestor Type: Regional Area Manager`);
                     branchdbConnection.query(
                         // `SELECT rm.fullname AS rm_fullname,rm.regionname AS rm_region, rm.email AS rm_email, am.fullname AS am_fullname,am.regionname AS am_region, am.email AS am_email 
                         // FROM am_approvers am
@@ -467,7 +553,7 @@ module.exports = {
                                 if (!approvers.length == 0) {
                                     branchdbConnection.query(query.postRfRequest,
                                         [
-                                            req.body.data.type, req.body.data.rfDate, req.body.data.requestor, req.body.data.baseBranch, req.body.data.region, req.body.data.email, 
+                                            req.body.data.type, req.body.data.rfDate, req.body.data.requestor, req.body.data.baseBranch, req.body.data.region, req.body.data.email,
                                             req.body.data.period, req.body.data.controlNo, req.body.data.rfAllowance, req.body.data.pendingRf,
                                             req.body.data.totalExpenses, req.body.data.cashOnHand, req.body.data.transpo, req.body.data.supplies,
                                             req.body.data.meals, req.body.data.others, req.body.data.total, req.body.data.purpose,
@@ -476,51 +562,70 @@ module.exports = {
                                         ],
                                         (err, results, fields) => {
                                             if (!err) {
-                                                branchdbConnection.query(query.getRfRequestByControlNo, (req.body.data.controlNo), (err, request, fields) =>{
+                                                branchdbConnection.query(query.getRfRequestByControlNo, (req.body.data.controlNo), (err, request, fields) => {
                                                     if (!err) {
                                                         if (!request.length == 0) {
-                                                            console.log('REQUEST',request[0]);
+                                                            console.log('REQUEST', request[0]);
                                                             sendEmailRf(request[0]).then(response => {
                                                                 if (response.accepted) {
-                                                                    sendRfRequestor(request[0], request[0].ass_fullname, request[0].vpo_fullname).then(resp =>{
+                                                                    sendRfRequestor(request[0], request[0].ass_fullname, request[0].vpo_fullname).then(resp => {
                                                                         if (resp.accepted) {
-                                                                            res.send({message:"Request submitted successfully"});
+                                                                            Logger.loggerInfo.addContext('context', 'requestController - post_RfRequest - Request Submitted Successfully');
+                                                                            Logger.loggerInfo.info(`sendRfRequestor - ${resp.messageId} - ${resp.accepted}`);
+                                                                            res.send({ message: "Request submitted successfully" });
                                                                         } else if (resp.rejected) {
-                                                                            res.status(500).send({message:"Network Error"});
+                                                                            Logger.loggerError.addContext('context', 'requestController - post_RfRequest - Network error');
+                                                                            Logger.loggerInfo.error(`sendRfRequestor - ${resp.messageId} - ${resp.rejected}`);
+                                                                            res.status(500).send({ message: "Network Error" });
                                                                         }
                                                                     }).catch(err => {
-                                                                        console.log(err);
-                                                                        res.status(500).send({message:"Network Error"});
+                                                                        Logger.loggerError.addContext('context', 'requestController - post_RfRequest - Network Error -');
+                                                                        Logger.loggerError.error(`sendRfRequestor ${err}`);
+                                                                        res.status(500).send({ message: "Network Error" });
                                                                     })
                                                                 } else if (response.rejected) {
-                                                                    res.status(500).send({message: 'Network Error'});
+                                                                    Logger.loggerError.addContext('context', 'requestController - post_RfRequest - Network Error -');
+                                                                    Logger.loggerError.error(`sendEmailRf - ${response.messageId} - ${response.rejected}`)
+                                                                    res.status(500).send({ message: 'Network Error' });
                                                                 }
                                                             }).catch(err => {
-                                                                console.log(err);
-                                                                res.status(500).send({message: 'Network Error'});
+                                                                Logger.loggerError.addContext('context', 'requestController - post_RfRequest - Network Error -');
+                                                                Logger.loggerError.error(`sendEmailRf ${err}`)
+                                                                res.status(500).send({ message: 'Network Error' });
                                                             })
-                                                            
+
                                                         } else {
-                                                            res.status(404).send({message:'Failed to submit request'});
-                                                            console.log(request.length);
+                                                            Logger.loggerError.addContext('context', 'requestController - post_RfRequest - getRfRequestByControlNo');
+                                                            Logger.loggerError.error(`No data found - ${request.length}`);
+                                                            res.status(404).send({ message: 'Failed to submit request' });
                                                         }
                                                     } else {
-                                                        res.status(500).send({message:"Something's wrong in the server"});
+                                                        Logger.loggerError.addContext('context', 'requestController - post_RfRequest - getRfRequestByControlNo');
+                                                        Logger.loggerError.error(`Something's wrong in the server - ${err}`);
+                                                        res.status(500).send({ message: "Something's wrong in the server" });
                                                     }
                                                 })
                                             } else {
-                                                res.status(500).send({message:"Something's wrong in the server"});
+                                                Logger.loggerError.addContext('context', 'requestController - post_RfRequest - postRfRequest');
+                                                Logger.loggerError.error(`Something's wrong in the server - ${err}`);
+                                                res.status(500).send({ message: "Something's wrong in the server" });
                                             }
                                         })
                                 } else {
+                                    Logger.loggerError.addContext('context', 'requestController - post_RfRequest -');
+                                    Logger.loggerError.error(`No data found for approvers - approvers length: ${approvers.length}`);
                                     res.status(404).send({ message: 'No approvers found' })
                                 }
                             } else {
-                                res.status(500).send({message:"Something's wrong in the server"});
+                                Logger.loggerError.addContext('context', 'requestController - post_RfRequest -');
+                                Logger.loggerError.error(`Error retrieving approvers - ${err}`);
+                                res.status(500).send({ message: "Something's wrong in the server" });
                             }
                         })
                     break;
                 case "Asst. to Vpo | Coo":
+                    Logger.loggerInfo.addContext('context', 'requestController - post_RfRequest -');
+                    Logger.loggerInfo.info(`Requestor Type: Asst. to Vpo | Coo`);
                     branchdbConnection.query(
                         // `SELECT rm.fullname AS rm_fullname,rm.regionname AS rm_region, rm.email AS rm_email, am.fullname AS am_fullname,am.regionname AS am_region, am.email AS am_email 
                         // FROM am_approvers am
@@ -553,47 +658,64 @@ module.exports = {
                                         ],
                                         (err, results, fields) => {
                                             if (!err) {
-                                                branchdbConnection.query(query.getRfRequestByControlNo, (req.body.data.controlNo), (err, request, fields) =>{
+                                                branchdbConnection.query(query.getRfRequestByControlNo, (req.body.data.controlNo), (err, request, fields) => {
                                                     if (!err) {
                                                         if (!request.length == 0) {
                                                             console.log(request[0]);
                                                             sendEmailRf(request[0]).then(response => {
                                                                 if (response.accepted) {
-                                                                    sendRfRequestor(request[0], request[0].vpo_fullname, '').then(resp =>{
+                                                                    sendRfRequestor(request[0], request[0].vpo_fullname, '').then(resp => {
                                                                         if (resp.accepted) {
-                                                                        res.send({message:"Request submitted successfully"})
+                                                                            Logger.loggerInfo.addContext('context', 'requestController - post_RfRequest - Request Submitted Successfully');
+                                                                            Logger.loggerInfo.info(`sendRfRequestor - ${resp.messageId} - ${resp.accepted}`);
+                                                                            res.send({ message: "Request submitted successfully" })
                                                                         } else if (resp.rejected) {
-                                                                            res.status(500).send({message:"Network Error"});
+                                                                            Logger.loggerError.addContext('context', 'requestController - post_RfRequest - Network error');
+                                                                            Logger.loggerInfo.error(`sendRfRequestor - ${resp.messageId} - ${resp.rejected}`);
+                                                                            res.status(500).send({ message: "Network Error" });
                                                                         }
                                                                     }).catch(err => {
-                                                                        console.log(err);
-                                                                        res.status(500).send({message:"Network Error"});
+                                                                        Logger.loggerError.addContext('context', 'requestController - post_RfRequest - Network Error -');
+                                                                        Logger.loggerError.error(`sendRfRequestor ${err}`);
+                                                                        res.status(500).send({ message: "Network Error" });
                                                                     })
                                                                 } else if (response.rejected) {
-                                                                    res.status(500).send({message: 'Network Error'});
+                                                                    Logger.loggerError.addContext('context', 'requestController - post_RfRequest - Network Error -');
+                                                                    Logger.loggerError.error(`sendEmailRf - ${response.messageId} - ${response.rejected}`)
+                                                                    res.status(500).send({ message: 'Network Error' });
                                                                 }
                                                             }).catch(err => {
-                                                                console.log(err);
-                                                                res.status(500).send({message:"Network Error"});
+                                                                Logger.loggerError.addContext('context', 'requestController - post_RfRequest - Network Error -');
+                                                                Logger.loggerError.error(`sendEmailRf ${err}`)
+                                                                res.status(500).send({ message: "Network Error" });
                                                             })
-                                                            
+
                                                         } else {
-                                                            res.status(404).send({message:'Failed to submit request'});
-                                                            console.log(request.length);
+                                                            Logger.loggerError.addContext('context', 'requestController - post_RfRequest - getRfRequestByControlNo');
+                                                            Logger.loggerError.error(`No data found - ${request.length}`);
+                                                            res.status(404).send({ message: 'Failed to submit request' });
                                                         }
                                                     } else {
-                                                        res.status(500).send({message:"Something's wrong in the server"});
+                                                        Logger.loggerError.addContext('context', 'requestController - post_RfRequest - getRfRequestByControlNo');
+                                                        Logger.loggerError.error(`Something's wrong in the server - ${err}`);
+                                                        res.status(500).send({ message: "Something's wrong in the server" });
                                                     }
                                                 })
                                             } else {
-                                                res.status(500).send({message:"Something's wrong in the server"});
+                                                Logger.loggerError.addContext('context', 'requestController - post_RfRequest - postRfRequest');
+                                                Logger.loggerError.error(`Something's wrong in the server - ${err}`);
+                                                res.status(500).send({ message: "Something's wrong in the server" });
                                             }
                                         })
                                 } else {
+                                    Logger.loggerError.addContext('context', 'requestController - post_RfRequest -');
+                                    Logger.loggerError.error(`No data found for approvers - approvers length: ${approvers.length}`);
                                     res.status(404).send({ message: 'No approvers found' });
                                 }
                             } else {
-                                res.send({message:"Something's wrong in the server"});
+                                Logger.loggerError.addContext('context', 'requestController - post_RfRequest -');
+                                Logger.loggerError.error(`Error retrieving approvers - ${err}`);
+                                res.send({ message: "Something's wrong in the server" });
                             }
                         })
                     break;
@@ -605,6 +727,8 @@ module.exports = {
             }
 
         } catch (error) {
+            Logger.loggerFatal.addContext('context', 'requestController - post_RfRequest');
+            Logger.loggerFatal.fatal(`Method Error ${error}`);
             res.status(500).send({ message: "Something's wrong in the server. Please refresh the page and try again." });
         }
     },

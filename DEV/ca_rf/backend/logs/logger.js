@@ -7,7 +7,7 @@ log4js.configure(
         appenders: {
             logAppenderInfo:{
                 type:'dateFile',
-                filename: `C:\\ca_rf_logs\\CA_RFLOGS_${date}.log`,
+                filename: `C:\\ca_rfLogs\\CARFLOGS_${date}.log`,
                 layout:{
                     type: 'pattern',
                     pattern: '%p %d %X{context} %m',
@@ -15,7 +15,7 @@ log4js.configure(
             },
             logAppenderError:{
                 type:'dateFile',
-                filename: `C:\\ca_rf_logs\\CA_RFLOGS_${date}.log`,
+                filename: `C:\\ca_rfLogs\\CARFLOGS_${date}.log`,
                 layout:{
                     type: 'pattern',
                     pattern: '%p %d %X{context} %m',
@@ -23,7 +23,7 @@ log4js.configure(
             },
             logAppenderFatal:{
                 type:'dateFile',
-                filename: `C:\\ca_rf_logs\\CA_RFLOGS_${date}.log`,
+                filename: `C:\\ca_rfLogs\\CARFLOGS_${date}.log`,
                 layout:{
                     type: 'pattern',
                     pattern: '%p %d %X{context} %m',

@@ -1,5 +1,4 @@
 const Html_Pdf = require('html-pdf');
-// const PDFDocument = require('pdfkit');
 
 
 function _createPdfStream(html) {
@@ -29,13 +28,6 @@ function _streamToBuffer(stream, cb) {
         return cb(e);
     })
 }
-
-    // console.log(path.join(__dirname, '..','controllers','sample.pdf'));
-    // let pdfPath = path.join(__dirname, '..','controllers','sample.pdf')
-    // let pdfDoc = new PDFDocument;
-    // pdfDoc.pipe(fs.createWriteStream(pdfPath));
-    // pdfDoc.text(data);
-    // pdfDoc.end();
 
 module.exports = {
 
