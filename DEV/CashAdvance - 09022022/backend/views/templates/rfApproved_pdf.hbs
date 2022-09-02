@@ -1,0 +1,341 @@
+<div style="margin:-9px 0px 0px -9px">
+    <div style="padding-left: 15px;padding-top: 7px;padding-bottom: 10px;background-color: #cc0404;width: 67%;">
+        <h4
+            style="margin: auto;font-size: 21px;color: white;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+            Revolving Fund Liquidation</h4>
+    </div>
+    <img src="https://phisoblog.files.wordpress.com/2015/11/mlhuillier-logo.jpg" alt="ml_logo"
+        style="margin-top:-50px;padding-right: 0;padding-left: 0px;width: 35%;height: 80px;float:right">
+</div>
+<!-- okay na bawbaw -->
+<!-- second--col -->
+<div style="margin-top: 65px;">
+    <div style="float: right;margin-right:45px">
+        <div>
+            <label for="cash-advance"
+                style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight: 600;font-size: 15px;padding: 3px 0px 0px 0px;">
+                Control No:
+            </label>
+            <input value="{{data.controlNo}}" style="margin-left:24px;font-weight: 400;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;background-color:gainsboro; padding:5px 5px 5px 5px; border-radius: 3px; border: 1.5px solid rgb(170, 168, 168); 
+                width:62%">
+        </div>
+        <div style="margin-top:10px;">
+            <label for="cash-advance"
+                style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight: 600;font-size: 15px;padding: 3px 0px 0px 0px;">
+                Period:
+            </label>
+            <input value="{{data.period}}" style="text-transform:uppercase;margin-left:60px;font-weight: 400;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;background-color:gainsboro; padding:5px 5px 5px 5px; border-radius: 3px; border: 1.5px solid rgb(170, 168, 168); 
+            width:62%">
+        </div>
+        <div style="margin-top:10px;">
+            <label for="cash-advance"
+                style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight: 600;font-size: 15px;padding: 3px 0px 0px 0px;">
+                RF Allowance:
+            </label>
+            <input value="{{data.allowance}}" style="margin-left:8px;font-weight: 400;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;background-color:gainsboro; padding:5px 5px 5px 5px; border-radius: 3px; border: 1.5px solid rgb(170, 168, 168); 
+                width:62%">
+        </div>
+        <div style="margin-top:10px;">
+            <label for="cash-advance"
+                style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight: 600;font-size: 15px;padding: 3px 0px 0px 0px;">
+                Pending RF:
+            </label>
+            <input value="{{data.pendingRf}}" style="text-transform:uppercase;margin-left:27px;font-weight: 400;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;background-color:gainsboro; padding:5px 5px 5px 5px; border-radius: 3px; border: 1.5px solid rgb(170, 168, 168); 
+                width:62%" />
+        </div>
+        <div style="margin-top:10px;">
+            <label for="cash-advance"
+                style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight: 600;font-size: 15px;padding: 3px 0px 0px 0px;">
+                Total Expenses:
+            </label>
+            <input value="{{data.totalExpenses}}" style="font-weight: 400;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;background-color:gainsboro; padding:5px 5px 5px 5px; border-radius: 3px; border: 1.5px solid rgb(170, 168, 168); 
+                width:62%" />
+        </div>
+        <div style="margin-top:10px;">
+            <label for="cash-advance"
+                style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight: 600;font-size: 15px;padding: 3px 0px 0px 0px;">
+                Cash On Hand:
+            </label>
+            <input value="{{data.cashOnHand}}" style="margin-left:4px;font-weight: 400;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;background-color:gainsboro; padding:5px 5px 5px 5px; border-radius: 3px; border: 1.5px solid rgb(170, 168, 168); 
+                width:62%" />
+        </div>
+    </div>
+    <div style="margin-left:40px;margin-right:0px">
+        <div>
+            <label for="cash-advance"
+                style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight: 600;font-size: 15px;padding: 3px 0px 0px 0px;">
+                Requestor Type:
+            </label>
+            <input value="{{data.type}}" style="text-transform:uppercase;margin-left:1px;font-weight: 400;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;background-color:gainsboro; padding:5px 5px 5px 5px; border-radius: 3px; border: 1.5px solid rgb(170, 168, 168); 
+                width:33%" />
+        </div>
+        <div style="margin-top:10px;">
+            <label for="cash-advance"
+                style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight: 600;font-size: 15px;padding: 3px 0px 0px 0px;">
+                Date:
+            </label>
+            <input value="{{data.rf_date}}" style="text-transform:uppercase;margin-left:78px;font-weight: 400;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;background-color:gainsboro; padding:5px 5px 5px 5px; border-radius: 3px; border: 1.5px solid rgb(170, 168, 168); 
+                width:33%" />
+        </div>
+        <div style="margin-top:10px;">
+            <label for="cash-advance"
+                style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight: 600;font-size: 15px;padding: 3px 0px 0px 0px;">
+                Requestor:
+            </label>
+            <input value="{{data.requestor}}" style="text-transform:uppercase;margin-left:40px;font-weight: 400;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;background-color:gainsboro; padding:5px 5px 5px 5px; border-radius: 3px; border: 1.5px solid rgb(170, 168, 168); 
+                width:33%" />
+        </div>
+        <div style="margin-top:10px;">
+            <label for="cash-advance"
+                style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight: 600;font-size: 15px;padding: 3px 0px 0px 0px;">
+                Base Branch:
+            </label>
+            <input value="{{data.baseBranch}}" style="text-transform:uppercase;margin-left:26px;font-weight: 400;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;background-color:gainsboro; padding:5px 5px 5px 5px; border-radius: 3px; border: 1.5px solid rgb(170, 168, 168); 
+                width:33%" />
+        </div>
+        <div style="margin-top:10px;">
+            <label for="cash-advance"
+                style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight: 600;font-size: 15px;padding: 3px 0px 0px 0px;">
+                Region:
+            </label>
+            <input value="{{data.region}}" style="text-transform:uppercase;margin-left:63px;font-weight: 400;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;background-color:gainsboro; padding:5px 5px 5px 5px; border-radius: 3px; border: 1.5px solid rgb(170, 168, 168); 
+                width:33%" />
+        </div>
+        <div style="margin-top:10px;">
+            <label for="cash-advance"
+                style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight: 600;font-size: 15px;padding: 3px 0px 0px 0px;">
+                Email Address:
+            </label>
+            <input value="{{data.email}}" style="margin-left:8px;font-weight: 400;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;background-color:gainsboro; padding:5px 5px 5px 5px; border-radius: 3px; border: 1.5px solid rgb(170, 168, 168); 
+            width:33%" />
+        </div>
+    </div>
+    <br><br><br>
+    <div style="float: right;margin-right:45px">
+        <div>
+            <label for="cash-advance"
+                style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight: 600;font-size: 15px;padding: 3px 0px 0px 0px;">
+                Purpose:
+            </label>
+            <input value="{{data.purpose}}" style="margin-left:40px;font-weight: 400;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;background-color:gainsboro; padding:5px 5px 5px 5px; border-radius: 3px; border: 1.5px solid rgb(170, 168, 168); 
+            width:62%" />
+        </div>
+    </div>
+    <div style="margin-left:40px;margin-right:0px">
+        <div>
+            <label for="cash-advance"
+                style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight: 600;font-size: 15px;padding: 3px 0px 0px 0px;">
+                Transportation:
+            </label>
+            <input value="{{data.transportation}}" style="margin-left:5px;font-weight: 400;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                text-align:right;font-size: 14px;background-color:gainsboro; padding:5px 5px 5px 5px; border-radius: 3px; border: 1.5px solid rgb(170, 168, 168); 
+                width:33%" />
+        </div>
+        <div style="margin-top:10px;">
+            <label for="cash-advance"
+                style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight: 600;font-size: 15px;padding: 3px 0px 0px 0px;">
+                Office Supplies:
+                <input value="{{data.officeSupplies}}" style="font-weight: 400;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    text-align:right;font-size: 14px;background-color:gainsboro; padding:5px 5px 5px 5px; border-radius: 3px; border: 1.5px solid rgb(170, 168, 168); 
+                    width:33%" />
+            </label>
+        </div>
+        <div style="margin-top:10px;">
+            <label for="cash-advance"
+                style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight: 600;font-size: 15px;padding: 3px 0px 0px 0px;">
+                Meals:
+            </label>
+            <input value="{{data.meals}}" style="margin-left:71px;font-weight: 400;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                text-align:right;font-size: 14px;background-color:gainsboro; padding:5px 5px 5px 5px; border-radius: 3px; border: 1.5px solid rgb(170, 168, 168); 
+                width:33%" />
+        </div>
+        <div style="margin-top:10px;">
+            <label for="cash-advance"
+                style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight: 600;font-size: 15px;padding: 3px 0px 0px 0px;">
+                Others:
+            </label>
+            <input value="{{data.others}}" style="margin-left:68px;font-weight: 400;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                text-align:right;font-size: 14px;background-color:gainsboro; padding:5px 5px 5px 5px; border-radius: 3px; border: 1.5px solid rgb(170, 168, 168); 
+                width:33%" />
+        </div>
+        <div style="margin-top:10px;">
+            <label for="cash-advance"
+                style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight: 600;font-size: 15px;padding: 3px 0px 0px 0px;">
+                Total Expenses:
+            </label>
+            <input value="{{data.total}}" style="margin-left:8px;font-weight: 400;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;text-align:right;background-color:gainsboro; padding:5px 5px 5px 5px; border-radius: 3px; border: 1.5px solid rgb(170, 168, 168); 
+                width:33%" />
+        </div>
+
+    </div>
+    <br><br><br>
+    <div>
+        {{#if isNotVpo}}
+        <h4 style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;width: 93%; text-align: center; 
+            border-bottom: 1px solid rgba(0, 0, 0, 0.842); line-height: 0.1em;margin:auto">
+            <span style="background:#fff; padding:0 10px;">APPROVERS' SECTION</span>
+        </h4>
+        <br>
+        <br>
+        <table style="border-collapse: collapse; width: 90%;margin:auto">
+            <tr style="background-color: gainsboro">
+                <th
+                    style="border: 1px solid #dddddd; text-align: left;padding: 8px;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+                    Approver's Name</th>
+                <th
+                    style="border: 1px solid #dddddd; text-align: left;padding: 8px;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+                    Date & Time</th>
+                <th
+                    style="border: 1px solid #dddddd; text-align: left;padding: 8px;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+                    Status</th>
+            </tr>
+            {{#if data.am_fullname}}
+            <tr>
+                <td style="text-transform:uppercase;border: 1px solid #dddddd; text-align: left;padding: 8px;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;">{{data.am_fullname}}</td>
+                <td style="border: 1px solid #dddddd; text-align: left;padding: 8px;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;">{{data.am_date}}</td>
+                <td style="text-transform:uppercase;border: 1px solid #dddddd; text-align: left;padding: 8px;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;">{{data.am_status}}</td>
+            </tr>
+            {{/if}}
+            {{#if data.rm_fullname}}
+            <tr>
+                <td style="text-transform:uppercase;border: 1px solid #dddddd; text-align: left;padding: 8px;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;">{{data.rm_fullname}}</td>
+                <td style="border: 1px solid #dddddd; text-align: left;padding: 8px;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;">{{data.rm_date}}</td>
+                <td style="text-transform:uppercase;border: 1px solid #dddddd; text-align: left;padding: 8px;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;">{{data.rm_status}}</td>
+            </tr>
+            {{/if}}
+            {{#if data.ram_fullname}}
+            <tr>
+                <td style="text-transform:uppercase;border: 1px solid #dddddd; text-align: left;padding: 8px;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;">{{data.ram_fullname}}</td>
+                <td style="border: 1px solid #dddddd; text-align: left;padding: 8px;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;">{{data.ram_date}}</td>
+                <td style="text-transform:uppercase;border: 1px solid #dddddd; text-align: left;padding: 8px;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;">{{data.ram_status}}</td>
+            </tr>
+            {{/if}}
+            {{#if data.ass_fullname}}
+            <tr>
+                <td style="text-transform:uppercase;border: 1px solid #dddddd; text-align: left;padding: 8px;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;">{{data.ass_fullname}}</td>
+                <td style="border: 1px solid #dddddd; text-align: left;padding: 8px;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;">{{data.ass_date}}</td>
+                <td style="text-transform:uppercase;border: 1px solid #dddddd; text-align: left;padding: 8px;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;">{{data.ass_status}}</td>
+            </tr>
+            {{/if}}
+            {{#if data.vpo_fullname}}
+            <tr>
+                <td style="text-transform:uppercase;border: 1px solid #dddddd; text-align: left;padding: 8px;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;">{{data.vpo_fullname}}</td>
+                <td style="border: 1px solid #dddddd; text-align: left;padding: 8px;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;">{{data.vpo_date}}</td>
+                <td style="text-transform:uppercase;border: 1px solid #dddddd; text-align: left;padding: 8px;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;">{{data.vpo_status}}</td>
+            </tr>
+            {{/if}}
+        </table>
+        {{/if}}
+    </div>
+    {{!-- <br>
+    <br>
+    <br>
+    <div>
+        <div style="margin-left:40px">
+            <label
+                style="margin:3px 50px 3px 3px;font-weight: 600;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-size: 15px">AM
+                Approval</label>
+            <label
+                style="margin:3px 0px 3px 125px;font-weight: 600;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-size: 15px">RM
+                Approval</label>
+            <label
+                style="margin:3px 0px 3px 165px;font-weight: 600;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-size: 15px">RAM
+                Approval</label>
+        </div>
+        <div style="margin-left:40px">
+            <input value="{{data.am_fullname}}" style="margin:3px 50px 3px 0px;text-transform:uppercase;font-weight: 400; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;background-color:gainsboro; padding:5px 0px 5px 5px;border-radius: 3px; border: 1.5px solid rgb(170, 168, 168);
+            width:23%" />
+            <input value="{{data.rm_fullname}}" style="margin:3px 50px 3px 50px;text-transform:uppercase;font-weight: 400; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;background-color:gainsboro; padding:5px 0px 5px 5px;border-radius: 3px; border: 1.5px solid rgb(170, 168, 168);
+            width:23%" />
+            <input value="{{data.ram_fullname}}" style="margin:3px 10px 3px 40px;text-transform:uppercase;font-weight: 400; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;background-color:gainsboro; padding:5px 0px 5px 5px;border-radius: 3px; border: 1.5px solid rgb(170, 168, 168);
+            width:23%" />
+        </div>
+        <div style="margin-left:40px">
+            <input value="{{data.am_date}}" style="margin:3px 50px 3px 0px;text-transform:uppercase;font-weight: 400; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;background-color:gainsboro; padding:5px 0px 5px 5px;border-radius: 3px; border: 1.5px solid rgb(170, 168, 168);
+            width:23%" />
+            <input value="{{data.rm_date}}" style="margin:3px 50px 3px 50px;text-transform:uppercase;font-weight: 400; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;background-color:gainsboro; padding:5px 0px 5px 5px;border-radius: 3px; border: 1.5px solid rgb(170, 168, 168);
+            width:23%" />
+            <input value="{{data.ram_date}}" style="margin:3px 10px 3px 40px;text-transform:uppercase;font-weight: 400; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;background-color:gainsboro; padding:5px 0px 5px 5px;border-radius: 3px; border: 1.5px solid rgb(170, 168, 168);
+            width:23%" />
+        </div>
+        <div style="margin-left:40px">
+            <input value="{{data.am_status}}" style="margin:3px 50px 3px 0px;text-transform:uppercase;font-weight: 400; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;background-color:gainsboro; padding:5px 0px 5px 5px;border-radius: 3px; border: 1.5px solid rgb(170, 168, 168);
+            width:23%" />
+            <input value="{{data.rm_status}}" style="margin:3px 50px 3px 50px;text-transform:uppercase;font-weight: 400; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;background-color:gainsboro; padding:5px 0px 5px 5px;border-radius: 3px; border: 1.5px solid rgb(170, 168, 168);
+            width:23%" />
+            <input value="{{data.ram_status}}" style="margin:3px 10px 3px 40px;text-transform:uppercase;font-weight: 400; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;background-color:gainsboro; padding:5px 0px 5px 5px;border-radius: 3px; border: 1.5px solid rgb(170, 168, 168);
+            width:23%" />
+        </div>
+        <br>
+        <div style="margin-left:40px">
+            <label
+                style="margin: 0px 0px 3px 153px;font-weight: 600;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-size: 15px">Asst.
+                Vpo Approval</label>
+            <label
+                style="margin: 0px 0px 3px 125px;font-weight: 600;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-size: 15px">Vpo
+                | Coo Approval</label>
+        </div>
+        <div style="margin-left:40px">
+            <input value="{{data.ass_fullname}}" style="margin: 0px 0px 6px 150px;text-transform:uppercase;font-weight: 400; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;background-color:gainsboro; padding:5px 0px 5px 5px;border-radius: 3px; border: 1.5px solid rgb(170, 168, 168);
+            width:23%" />
+            <input value="{{data.vpo_fullname}}" style="margin: 0px 0px 6px 90px;text-transform:uppercase;font-weight: 400; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;background-color:gainsboro; padding:5px 0px 5px 5px;border-radius: 3px; border: 1.5px solid rgb(170, 168, 168);
+            width:23%" />
+        </div>
+        <div style="margin-left:40px">
+            <input value="{{data.ass_date}}" style="margin: 0px 0px 6px 150px;text-transform:uppercase;font-weight: 400; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;background-color:gainsboro; padding:5px 0px 5px 5px;border-radius: 3px; border: 1.5px solid rgb(170, 168, 168);
+            width:23%" />
+            <input value="{{data.vpo_date}}" style="margin: 0px 0px 6px 90px;text-transform:uppercase;font-weight: 400; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;background-color:gainsboro; padding:5px 0px 5px 5px;border-radius: 3px; border: 1.5px solid rgb(170, 168, 168);
+            width:23%" />
+        </div>
+        <div style="margin-left:40px">
+            <input value="{{data.ass_status}}" style="margin: 0px 0px 0px 150px;text-transform:uppercase;font-weight: 400; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;background-color:gainsboro; padding:5px 0px 5px 5px;border-radius: 3px; border: 1.5px solid rgb(170, 168, 168);
+            width:23%" />
+            <input value="{{data.vpo_status}}" style="margin: 0px 0px 0px 90px;text-transform:uppercase;font-weight: 400; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;background-color:gainsboro; padding:5px 0px 5px 5px;border-radius: 3px; border: 1.5px solid rgb(170, 168, 168);
+            width:23%" />
+        </div>
+    </div> --}}
+</div>
